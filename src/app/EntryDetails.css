@@ -1,0 +1,43 @@
+.paper-content {
+  padding: 2rem;
+}
+
+.flex-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.flex-container-col {
+  flex-direction: column;
+}
+
+.flex-container-item {
+  margin: 1rem;
+}
+
+.entry-container {
+  margin-top: 2rem;
+}
+
+.avatar {
+  width: 6rem;
+  height: 6rem;
+}
+
+.date {
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.info {
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  font-weight: 700;
+}
+
+.info-content {
+  font-weight: 400;
+}

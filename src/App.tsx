@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { connect, DispatchProp } from 'react-redux';
+import { loadEntriesStart } from './store/action';
+import { EntryList } from './app/EntryList';
+import { EntryDetails } from './app/EntryDetails';
+
 import './App.css';
 
-function App() {
+export const App = connect()((props: DispatchProp) => {
+  const { dispatch } = props;
+  useEffect(() => {
+    dispatch(loadEntriesStart());
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <div className="entry-list-container">
+        <EntryList />
+      </div>
+      <div className="entry-details-container">
+        <EntryDetails />
+      </div>
     </div>
   );
-}
-
-export default App;
+});

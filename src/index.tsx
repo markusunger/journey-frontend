@@ -1,17 +1,24 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { Container } from '@material-ui/core';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { AuthGuard } from './auth/AuthGuard';
+import { configureStore } from './store';
+
+const queryCache = new QueryCache();
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Provider store={store}>
+        <Container maxWidth="xl">
+          <AuthGuard />
+        </Container>
+      </Provider>
+    </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
