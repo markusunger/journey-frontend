@@ -2,10 +2,6 @@ export enum FetchTypes {
   entries = 'entries',
 }
 
-export enum PostTypes {
-  login = 'login',
-}
-
 const API_PATH = 'http://localhost/api/';
 
 export const fetchData = (type: string): Promise<any> => {
@@ -21,11 +17,8 @@ export const fetchData = (type: string): Promise<any> => {
   });
 };
 
-export const postData = (
-  type: string,
-  body: Record<any, unknown>
-): Promise<any> => {
-  return fetch(`${API_PATH}${PostTypes[type as PostTypes]}`, {
+const postData = (path: string, body: Record<any, unknown>): Promise<any> => {
+  return fetch(`${API_PATH}${path}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -33,4 +26,38 @@ export const postData = (
     },
     body: JSON.stringify(body),
   }).then(response => response.json());
+};
+
+export const submitPassword = async (password: string) => {
+  try {
+    const response = await postData(`login`, { password });
+    return response;
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const favEntry = async (id: string) => {
+  try {
+    const response = await postData(`entries/${id}/fav`, {});
+    return response;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
+export const submitUpdate = async (id: string, text: string) => {
+  try {
+    const response = await postData(`entries/${id}/update`, { text });
+
+    if (!response || !response.entry || !response.entry.id) {
+      throw new Error('invalid object response');
+    }
+    return response.entry;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 };

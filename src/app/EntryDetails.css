@@ -13,7 +13,19 @@
 }
 
 .flex-container-item {
-  margin: 1rem;
+  flex: 1;
+  margin: 0.5rem;
+}
+
+.flex-container-item-main {
+  flex: 2;
+}
+
+.flex-container-self-bottom {
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+  align-self: flex-start;
 }
 
 .entry-container {
@@ -23,12 +35,13 @@
 .avatar {
   width: 6rem;
   height: 6rem;
+  border-radius: 50%;
 }
 
 .date {
   margin: 0;
   padding: 0;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
@@ -40,4 +53,23 @@
 
 .info-content {
   font-weight: 400;
+}
+
+.photo-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.photo-preview {
+  width: auto;
+  height: 6rem;
+  margin-right: 2rem;
+}
+
+.update-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,15 +1,19 @@
 .app-container {
   display: flex;
+  align-self: center;
+  max-width: 1400px;
+  width: 90%;
+  background-color: #19191b;
 }
 
 .entry-list-container {
-  flex: 1;
+  flex: 3;
   padding: 2rem;
   max-height: 95vh;
   overflow-y: scroll;
 }
 
 .entry-details-container {
-  flex: 2;
+  flex: 5;
   padding: 2rem;
 }

@@ -1,24 +1,34 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { StoreAwaitProvider } from 'redux-await-action';
 import ReactDOM from 'react-dom';
-import { QueryCache, ReactQueryCacheProvider } from 'react-query';
-import { Container } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider, CssBaseline } from '@material-ui/core';
 import './index.css';
 import { AuthGuard } from './auth/AuthGuard';
-import { configureStore } from './store';
+import { configureStore, awaitEmitter } from './store';
 
-const queryCache = new QueryCache();
 const store = configureStore();
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#e98e59',
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReactQueryCacheProvider queryCache={queryCache}>
-      <Provider store={store}>
-        <Container maxWidth="xl">
-          <AuthGuard />
-        </Container>
-      </Provider>
-    </ReactQueryCacheProvider>
+    <Provider store={store}>
+      <StoreAwaitProvider emitter={awaitEmitter}>
+        <CssBaseline>
+          <ThemeProvider theme={theme}>
+            <AuthGuard />
+          </ThemeProvider>
+        </CssBaseline>
+      </StoreAwaitProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
