@@ -2,7 +2,7 @@ export enum FetchTypes {
   entries = 'entries',
 }
 
-const API_PATH = 'http://localhost/api/';
+const API_PATH = '/api/';
 
 export const fetchData = (type: string): Promise<any> => {
   return fetch(`${API_PATH}${FetchTypes[type as FetchTypes]}`, {
