@@ -1,0 +1,21 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: 116.203.248.146
+          username: root
+          port: 22
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd journey-frontend/
+            git pull
+            npm install && npm build
