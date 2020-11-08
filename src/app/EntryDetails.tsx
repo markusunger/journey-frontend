@@ -36,6 +36,11 @@ export const EntryDetails = connect((state: AppState) => ({
     const [updateText, setUpdateText] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    useEffect(() => {
+      setUpdateText(props.entry?.updateFromAuthor || '');
+      setShowUpdate(!!props.entry?.updateFromAuthor);
+    }, [props.entry]);
+
     if (!props.entry) {
       return (
         <Paper elevation={3}>
@@ -43,11 +48,6 @@ export const EntryDetails = connect((state: AppState) => ({
         </Paper>
       );
     }
-
-    useEffect(() => {
-      setUpdateText(props.entry?.updateFromAuthor || '');
-      setShowUpdate(!!props.entry?.updateFromAuthor);
-    }, [props.entry]);
 
     const weatherString = getWeatherString(props.entry.weather);
 
