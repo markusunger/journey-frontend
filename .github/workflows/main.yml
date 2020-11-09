@@ -19,3 +19,8 @@ jobs:
             cd journey-frontend/
             git pull
             npm install && npm run build
+            mkdir -p build/images
+            cp -R ../journey-archive/assets/*.jpg build/images
+            cp -R ../journey-archive/assets/*.jpeg build/images
+            cp -R ../journey-archive/assets/*.png build/images
+            cp -R ../journey-archive/assets/*.JPG build/images
