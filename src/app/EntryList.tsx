@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import {
   Paper,
@@ -33,6 +33,13 @@ export const EntryList = connect((state: AppState) => ({
   (props: EntryListProps & DispatchProp): JSX.Element => {
     const [sortedBy, setSortedBy] = useState<EntrySortKeys | ''>('');
     const [selectedEntry, setSelectedEntry] = useState<string | null>(null);
+
+    const favCount = useMemo(() => {
+      return props.entries.reduce(
+        (count, entry) => (entry.favourite ? count + 1 : count),
+        0
+      );
+    }, [props.entries]);
 
     if (!props.entries || props.entries.length === 0) {
       return (
@@ -127,7 +134,7 @@ export const EntryList = connect((state: AppState) => ({
                       isSortedBy('favorite') ? getSortDirection() : 'asc'
                     }
                   >
-                    Markiert
+                    Markiert ({favCount})
                   </TableSortLabel>
                 </TableCell>
               </TableRow>
