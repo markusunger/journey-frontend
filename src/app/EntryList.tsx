@@ -47,8 +47,8 @@ export const EntryList = connect((state: AppState) => ({
       props.dispatch(setSortKey(key));
     };
 
-    const isSortedBy = (col: 'author' | 'date' | 'fav'): boolean => {
-      return /$col^/.test(sortedBy);
+    const isSortedBy = (col: 'author' | 'date' | 'favorite'): boolean => {
+      return new RegExp(`^${col}`).test(sortedBy);
     };
 
     const getSortDirection = (): 'asc' | 'desc' => {
@@ -117,11 +117,15 @@ export const EntryList = connect((state: AppState) => ({
                         : EntrySortKeys.FAV_ASC
                     )
                   }
-                  sortDirection={isSortedBy('fav') ? getSortDirection() : 'asc'}
+                  sortDirection={
+                    isSortedBy('favorite') ? getSortDirection() : 'asc'
+                  }
                 >
                   <TableSortLabel
-                    active={isSortedBy('fav')}
-                    direction={isSortedBy('fav') ? getSortDirection() : 'asc'}
+                    active={isSortedBy('favorite')}
+                    direction={
+                      isSortedBy('favorite') ? getSortDirection() : 'asc'
+                    }
                   >
                     Markiert
                   </TableSortLabel>
