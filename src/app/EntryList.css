@@ -1,3 +1,11 @@
 .table-header:hover {
   cursor: pointer;
 }
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+}

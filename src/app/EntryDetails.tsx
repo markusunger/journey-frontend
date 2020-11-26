@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { Button, Paper, TextField } from '@material-ui/core';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import {
   ThumbUp,
   ThumbUpOutlined,
@@ -9,7 +10,7 @@ import {
 } from '@material-ui/icons';
 import ModalImage from 'react-modal-image';
 import { useAwaitAction } from 'redux-await-action';
-import { JourneyFile } from '../lib/types';
+import { JourneyFile, CopyLinks } from '../lib/types';
 import {
   favEntryStart,
   submitUpdateStart,
@@ -17,7 +18,7 @@ import {
   SUBMIT_UPDATE_FAILED,
 } from '../store/action';
 import { AppState } from '../store/types';
-import { getMoodEmoji, getWeatherString } from './utils';
+import { getMoodEmoji, getWeatherString, formatDateToClipboard } from './utils';
 
 import './EntryDetails.css';
 
@@ -35,6 +36,8 @@ export const EntryDetails = connect((state: AppState) => ({
     );
     const [updateText, setUpdateText] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [dateCopyVisible, setDateCopyVisible] = useState(false);
+    const [textCopyVisible, setTextCopyVisible] = useState(false);
 
     useEffect(() => {
       setUpdateText(props.entry?.updateFromAuthor || '');
@@ -68,6 +71,41 @@ export const EntryDetails = connect((state: AppState) => ({
       }
     };
 
+    const handleCopyHover = (type: CopyLinks, show: boolean) => {
+      switch (type) {
+        case CopyLinks.DATE:
+          setDateCopyVisible(show);
+          break;
+        case CopyLinks.TEXT:
+          setTextCopyVisible(show);
+          break;
+        default:
+          break;
+      }
+    }
+
+    const handleCopy = async (type: CopyLinks) => {
+      const copyToClipboard = async (text: string): Promise<void> => navigator.clipboard.writeText(text);
+  
+      switch (type) {
+        case CopyLinks.DATE:
+          await copyToClipboard(formatDateToClipboard(new Intl.DateTimeFormat('de-DE', {
+            weekday: 'long',
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          }).format(new Date(props.entry?.date_journal as number))) as string);
+          break;
+        case CopyLinks.TEXT:
+          await copyToClipboard(props.entry?.text || '');
+          break;
+        default:
+          break;
+      }
+    }
+
     return (
       <>
         <Paper elevation={3}>
@@ -81,16 +119,21 @@ export const EntryDetails = connect((state: AppState) => ({
                 />
               </div>
               <div className="flex-container flex-container-col flex-container-item flex-container-item-main">
-                <p className="date">
-                  {new Intl.DateTimeFormat('de-DE', {
-                    weekday: 'long',
-                    year: '2-digit',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  }).format(new Date(props.entry.date_journal))}
-                </p>
+                <div className="date" onMouseOver={():void => handleCopyHover(CopyLinks.DATE, true)} onMouseOut={():void => handleCopyHover(CopyLinks.DATE, false)}>
+                  <div>
+                      {new Intl.DateTimeFormat('de-DE', {
+                      weekday: 'long',
+                      year: '2-digit',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }).format(new Date(props.entry.date_journal))}
+                  </div>
+                  <div className={dateCopyVisible ? 'visible' : 'hidden'}>
+                    <AssignmentIcon onClick={(): Promise<void> => handleCopy(CopyLinks.DATE)} />
+                  </div>
+                </div>
                 <p className="info">
                   Ort:{' '}
                   <span className="info-content">
@@ -125,10 +168,15 @@ export const EntryDetails = connect((state: AppState) => ({
                 </Button>
               </div>
             </div>
-            <div
-              className="entry-container"
-              dangerouslySetInnerHTML={{ __html: props.entry.text }}
-            />
+            <div onMouseOver={():void => handleCopyHover(CopyLinks.TEXT, true)} onMouseOut={():void => handleCopyHover(CopyLinks.TEXT, false)}>
+              <div
+                className="entry-container"
+                dangerouslySetInnerHTML={{ __html: props.entry.text }}
+              />
+              <div className={textCopyVisible ? 'visible' : 'hidden'}>
+                    <AssignmentIcon onClick={(): Promise<void> => handleCopy(CopyLinks.TEXT)} />
+                  </div>
+            </div>
             {props.entry.photos.length > 0 && (
               <div className="photo-container">
                 {props.entry.photos.map((photo, idx) => (

@@ -69,3 +69,17 @@ export const getWeatherString = (weather: EntryWeather): string | undefined => {
 
   return weatherString;
 };
+
+export const formatDateToClipboard = (date: string): string => {
+  const parts = date.split(', ');
+  const [day, month, year] = parts[1].split('.');
+
+  const parsableDate = `20${year}-${month}-${day}`;
+
+  return `
+    ${new Intl.DateTimeFormat('de-DE', { month: 'long' }).format(new Date(parsableDate))}
+    ${day}
+    20${year}
+    ${parts[0]}
+  `;
+}

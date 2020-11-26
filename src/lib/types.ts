@@ -40,3 +40,8 @@ export enum EntrySortKeys {
   FAV_ASC = 'favorite_ascending',
   FAV_DESC = 'favorite_descending',
 }
+
+export enum CopyLinks {
+  DATE = 'date',
+  TEXT = 'text',
+}
